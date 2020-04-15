@@ -11,14 +11,14 @@ class BGE:
     cruiser = [''] * 3
     battleship = [''] * 4
     SHIPS = [destroyer, cruiser, battleship]
-    CLEAR = ''
+    CLEAR = ' '
     DIRECTIONS = [UP, DOWN, NOMOVE]
 
     def __init__(self, rows=None, cols=None):
         self.rows = rows
-        self.row = [''] * rows
         self.cols = cols
-        self.board = [self.row] * self.cols
+        self.board = [[BGE.CLEAR for row in range(self.rows)] for col in
+                      range(self.cols)]
         self.game_ships = []
         for ship in BGE.SHIPS:
             self.game_ships.append(self.place_ship(ship))
@@ -109,10 +109,11 @@ class BGE:
             for ship in self.game_ships:
                 hit = self.check_hit(coord, ship)
                 if hit == 'X':
+                    self.hit_number += 1
                     self.board[row][column] = hit
                     break
-                else: #todo get only the cell to change value and not entire
-                    # column
+                else:
+                    self.miss_number += 1
                     self.board[row][column] = hit
             if h < self.hit_number:
                 print('Hit!')
@@ -144,10 +145,7 @@ class BGE:
         for placement in ship:
             if coord == placement:
                 hit = 'X'
-                self.hit_number += 1
                 break
-            else:
-                self.miss_number += 1
         return hit
 
     def check_victory(self):
