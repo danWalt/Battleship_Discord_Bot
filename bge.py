@@ -22,10 +22,22 @@ class BGE:
         self.game_ships = []
         for ship in BGE.SHIPS:
             self.game_ships.append(self.place_ship(ship))
+        self.ship_total_size = 0
+        for ship in self.game_ships:
+            self.ship_total_size += len(ship)
         self.turns = 0
         self.hit_number = 0
         self.miss_number = 0
-        self.ships_locations = []
+        self.shots = []
+        self.game_over = False
+        while self.game_over == False:
+            pprint.pprint(self.board)
+            print('Please pick a coordinate you want to shoot')
+            print('Pick row: ')
+            r = int(input())
+            print('Pick col: ')
+            c = int(input())
+            self.shoot(r, c)
 
     def find_start_point(self):
         start_point = (random.randint(0, self.rows - 1),
@@ -84,8 +96,29 @@ class BGE:
     def show_board(self):
         pprint.pprint(self.board)
 
-    def shoot(self):
-        pass
+    def shoot(self, row, column):
+        if row > self.rows or row < 0 or column > self.cols or column < 0:
+            return 'Invalid coordinates please try again'
+        elif (row, column) in self.shots:
+            return 'tile already shot, please try again'
+        else:
+            coord = (row, column)
+            self.shots.append((row, column))
+            self.turns += 1
+            h = self.hit_number
+            for ship in self.game_ships:
+                hit = self.check_hit(coord, ship)
+                if hit == 'X':
+                    self.board[row][column] = hit
+                    break
+                else: #todo get only the cell to change value and not entire
+                    # column
+                    self.board[row][column] = hit
+            if h < self.hit_number:
+                print('Hit!')
+            else:
+                print('Miss!')
+            self.check_victory()
 
     def is_placement_free(self, location):
         if len(self.game_ships) == 0:
@@ -104,10 +137,30 @@ class BGE:
                 return False
         return True
 
+    def check_hit(self, coord, ship):
+        r = coord[0]
+        c = coord[1]
+        hit = 'O'
+        for placement in ship:
+            if coord == placement:
+                hit = 'X'
+                self.hit_number += 1
+                break
+            else:
+                self.miss_number += 1
+        return hit
+
+    def check_victory(self):
+        if self.hit_number == self.ship_total_size:
+            self.game_over = True
+            print('All ships down, you have won!')
+        else:
+            print('Ships are still floating! Keep playing')
+
 
 def start_game(rows=8, col=8):
     return BGE(rows, col)
 
 
 b = start_game()
-# b.show_board()
+b.show_board()
