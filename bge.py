@@ -30,14 +30,14 @@ class BGE:
         self.miss_number = 0
         self.shots = []
         self.game_over = False
-        while self.game_over == False:
-            pprint.pprint(self.board)
-            print('Please pick a coordinate you want to shoot')
-            print('Pick row: ')
-            r = int(input())
-            print('Pick col: ')
-            c = int(input())
-            self.shoot(r, c)
+        # while self.game_over == False:
+        #     pprint.pprint(self.board)
+        #     print('Please pick a coordinate you want to shoot')
+        #     print('Pick row: ')
+        #     r = int(input())
+        #     print('Pick col: ')
+        #     c = int(input())
+        #     self.shoot(r, c)
 
     def find_start_point(self):
         start_point = (random.randint(0, self.rows - 1),
@@ -94,7 +94,7 @@ class BGE:
         print('Number of misses: ', self.miss_number)
 
     def show_board(self):
-        pprint.pprint(self.board)
+        return self.board
 
     def shoot(self, row, column):
         if row > self.rows or row < 0 or column > self.cols or column < 0:
@@ -158,7 +158,3 @@ class BGE:
 
 def start_game(rows=8, col=8):
     return BGE(rows, col)
-
-
-b = start_game()
-b.show_board()
