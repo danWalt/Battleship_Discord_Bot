@@ -19,6 +19,7 @@ INSTRUCTIONS1 = 'A game of battleships is about to begin'
 INSTRUCTIONS2 = 'An 6X6 board with 3 ships on it will be created'
 INSTRUCTIONS3 = "You'll have to select a row and a column to shoot at every " \
                 "turn until you sink all 3 ships."
+INSTRUCTIONS4 = 'Type ^help to see all game commands'
 
 
 @bot.event
@@ -51,6 +52,7 @@ async def start_game(ctx):
     await ctx.author.dm_channel.send(INSTRUCTIONS3)
     for row in BOARD:
         await ctx.author.dm_channel.send(row)
+    await ctx.author.dm_channel.send(INSTRUCTIONS4)
 
 
 @bot.command()
@@ -58,9 +60,9 @@ async def shoot(ctx, row: int, column: int):
     author = ctx.message.author
     if author == bot.user:
         return
-    await ctx.author.dm_channel.send(GAME.shoot(row, column))
-    for row in BOARD:
-        await ctx.author.dm_channel.send(row)
+    await ctx.author.dm_channel.send(GAME.shoot(row - 1, column - 1))
+    for r in BOARD:
+        await ctx.author.dm_channel.send(r)
     g_on = GAME.check_victory()
     if GAME.game_over:
         await ctx.author.dm_channel.send(g_on)
@@ -77,6 +79,7 @@ async def stats(ctx):
     stats = GAME.game_stats()
     for stat in stats:
         await ctx.author.dm_channel.send(stat)
+
 
 @bot.command()
 async def info(ctx):
@@ -97,7 +100,9 @@ async def info(ctx):
 
     await ctx.send(embed=embed)
 
+
 bot.remove_command('help')
+
 
 @bot.command()
 async def help(ctx):
@@ -109,7 +114,8 @@ async def help(ctx):
     embed.add_field(name="^start_game", value="bot creates a dm channel and "
                                               "starts a battle ship game",
                     inline=False)
-    embed.add_field(name="^shoot X Y", value="Bot shoots the given "
+    embed.add_field(name="^shoot X Y", value="Select coordinates between "
+                                             "1-6, bot shoots the given "
                                              "coordinates", inline=False)
     embed.add_field(name="^stats", value="Gives stats about current game, "
                                          "number of turns, hits and misses",
@@ -119,6 +125,7 @@ async def help(ctx):
     embed.add_field(name="^help", value="Gives this message", inline=False)
 
     await ctx.send(embed=embed)
+
 
 # todo maybe add board printing in a seperate function
 def board():
