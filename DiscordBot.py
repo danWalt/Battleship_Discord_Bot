@@ -1,5 +1,4 @@
 import discord
-from discord.ext.commands import Bot
 from discord.ext import commands
 import settings
 import bge
@@ -17,8 +16,8 @@ bot = commands.Bot(command_prefix=bot_prefix)
 
 GAME_START = 'Let The Game Begin!'
 INSTRUCTIONS1 = 'A game of battleships is about to begin'
-INSTRUCTIONS2 = 'An 8X8 board with 3 ships on it will be created'
-INSTRUCTIONS3 = "You'll have to select a row and a column to shot at every " \
+INSTRUCTIONS2 = 'An 6X6 board with 3 ships on it will be created'
+INSTRUCTIONS3 = "You'll have to select a row and a column to shoot at every " \
                 "turn until you sink all 3 ships."
 
 
