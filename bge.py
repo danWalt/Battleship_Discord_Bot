@@ -1,4 +1,3 @@
-import pprint
 import random
 
 UP = -1
@@ -11,7 +10,7 @@ class BGE:
     cruiser = [''] * 3
     battleship = [''] * 4
     SHIPS = [destroyer, cruiser, battleship]
-    CLEAR = ' '
+    CLEAR = '   '
     DIRECTIONS = [UP, DOWN, NOMOVE]
 
     def __init__(self, rows=None, cols=None):
@@ -30,14 +29,6 @@ class BGE:
         self.miss_number = 0
         self.shots = []
         self.game_over = False
-        # while self.game_over == False:
-        #     pprint.pprint(self.board)
-        #     print('Please pick a coordinate you want to shoot')
-        #     print('Pick row: ')
-        #     r = int(input())
-        #     print('Pick col: ')
-        #     c = int(input())
-        #     self.shoot(r, c)
 
     def find_start_point(self):
         start_point = (random.randint(0, self.rows - 1),
@@ -51,7 +42,6 @@ class BGE:
         return start_point
 
     def get_move_direction(self):
-
         move_direction = [random.choice(BGE.DIRECTIONS), random.choice(
             BGE.DIRECTIONS)]
         while move_direction == [NOMOVE, NOMOVE] or move_direction == [UP,
@@ -89,9 +79,7 @@ class BGE:
         return ship_coordinates
 
     def game_stats(self):
-        print('Number of turns: ', self.turns)
-        print('Number of hits: ', self.hit_number)
-        print('Number of misses: ', self.miss_number)
+        return [self.turns, self.hit_number, self.miss_number]
 
     def show_board(self):
         return self.board
@@ -116,10 +104,9 @@ class BGE:
                     self.miss_number += 1
                     self.board[row][column] = hit
             if h < self.hit_number:
-                print('Hit!')
+                return 'Hit!'
             else:
-                print('Miss!')
-            self.check_victory()
+                return 'Miss!'
 
     def is_placement_free(self, location):
         if len(self.game_ships) == 0:
@@ -151,10 +138,10 @@ class BGE:
     def check_victory(self):
         if self.hit_number == self.ship_total_size:
             self.game_over = True
-            print('All ships down, you have won!')
+            return 'All ships down, you have won!'
         else:
-            print('Ships are still floating! Keep playing')
+            return 'Ships are still floating! Keep playing'
 
 
-def start_game(rows=8, col=8):
+def start_game(rows=6, col=6):
     return BGE(rows, col)
