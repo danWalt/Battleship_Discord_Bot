@@ -127,15 +127,3 @@ def board():
 
 
 bot.run(TOKEN)
-
-# if __name__ == '__main__':
-#     client = discord.Client()
-#
-#     game = bge.start_game()
-#     board = game.show_board(client)
-#     on_ready()
-#     on_member_join(member)
-#     on_message()
-#
-#
-#     client.run(TOKEN)
